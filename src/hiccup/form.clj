@@ -75,10 +75,9 @@
              :checked checked?}]))
 
 (defn- selected? [x selected]
-  (cond (or (list? selected) (vector? selected))
-          (or (some (partial = x) selected) false)
-        (ifn? selected) (selected x)
-        :else (= x selected)))
+  (or (and (sequential? selected) ((set selected) x))
+      (and (ifn? selected) (selected x))
+      (= x selected)))
 
 (defelem select-options
   "Creates a seq of option tags from a collection."
